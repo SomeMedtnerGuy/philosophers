@@ -6,7 +6,7 @@
 /*   By: ndo-vale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 09:48:24 by ndo-vale          #+#    #+#             */
-/*   Updated: 2024/06/17 19:01:18 by ndo-vale         ###   ########.fr       */
+/*   Updated: 2024/06/18 13:11:49 by ndo-vale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int			is_over(t_mvpair *over);
 int			is_somebody_dead(t_philo_info *info_a, t_data *d, int i);
 int			ft_take_forks(t_philo_info *info, time_t init_time);
 int			ft_think(t_philo_info *info, time_t init_time);
-void		ft_eat(t_philo_info *info, time_t init_time);
+int			ft_eat(t_philo_info *info, time_t init_time);
 int			ft_sleep(t_philo_info *info, time_t init_time);
 
 #endif

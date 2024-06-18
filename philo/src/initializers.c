@@ -6,7 +6,7 @@
 /*   By: ndo-vale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 21:58:03 by ndo-vale          #+#    #+#             */
-/*   Updated: 2024/06/17 19:24:25 by ndo-vale         ###   ########.fr       */
+/*   Updated: 2024/06/18 09:18:54 by ndo-vale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,14 +74,20 @@ int	init_data(t_data *d, char **argv, int argc)
 	d->time_to_eat = ft_atoti(argv[3]);
 	d->time_to_sleep = ft_atoti(argv[4]);
 	status = pthread_mutex_init(&d->printf_m, NULL);
+	if (status != 0)
+		return (-1);
 	if (argc == 6)
+	{
 		d->meals_am_target = ft_atoi(argv[5]);
+		if (d->meals_am_target == 0)
+			return (pthread_mutex_destroy(&d->printf_m), 0);
+	}
 	else
-		d->meals_am_target = 0;
+		d->meals_am_target = -2;
 	d->init_time = time.tv_sec * 1000 + time.tv_usec / 1000;
 	d->over = init_mvpair(NULL, sizeof(int), &status);
-	if (d->philo_am == 0 || d->time_to_die == 0 || d->time_to_eat == 0
-		|| d->time_to_sleep == 0 || status != 0)
+	if (d->philo_am <= 0 || d->time_to_die == 0 || d->time_to_eat == 0
+		|| d->time_to_sleep == 0 || d->meals_am_target == -1 || status != 0)
 		return (ft_free_mvpair(d->over), -1);
 	return (0);
 }

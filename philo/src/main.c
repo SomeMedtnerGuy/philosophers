@@ -6,7 +6,7 @@
 /*   By: ndo-vale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 09:47:15 by ndo-vale          #+#    #+#             */
-/*   Updated: 2024/06/17 19:28:48 by ndo-vale         ###   ########.fr       */
+/*   Updated: 2024/06/18 13:10:43 by ndo-vale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,8 @@ void	*philo(void *argp)
 			return (NULL);
 		if (!ft_take_forks(info, init_time))
 			return (NULL);
-		ft_eat(info, init_time);
+		if (!ft_eat(info, init_time))
+			return (NULL);
 		if (!ft_sleep(info, init_time))
 			return (NULL);
 	}
@@ -69,7 +70,8 @@ void	monitor(t_philo_info *info_a, t_data *d)
 		if (is_somebody_dead(info_a, d, i))
 			break ;
 		pthread_mutex_lock(&info_a[i].meals_had->m);
-		if (*(int *)info_a[i].meals_had->v >= d->meals_am_target)
+		if (d->meals_am_target >= 0
+			&& *(int *)info_a[i].meals_had->v >= d->meals_am_target)
 			d->philo_fed++;
 		else
 			d->philo_fed = 0;
@@ -100,6 +102,8 @@ int	main(int argc, char **argv)
 	i = init_data(&d, argv, argc);
 	if (i != 0)
 		return (printf("Error parsing input. Try again\n"), i);
+	if (d.meals_am_target == 0)
+		return (printf("Everyone is fed\nEND OF SIMULATION\n"), 0);
 	if (alloc_arrays(&philo_a, &fork_a, &info_a, &d) != 0)
 		return (errno);
 	i = init_scene(philo_a, fork_a, info_a, &d);
